@@ -1,0 +1,81 @@
+[
+    {"class": "android.content.Intent", "method": "<init>"},
+    {"class": "android.content.ContextWrapper", "method": "sendBroadcast"},
+    {"class": "android.content.ContextWrapper", "method": "sendOrderedBroadcast"},
+    {"class": "android.content.ContextWrapper", "method": "sendStickyBroadcast"},
+    {"class": "android.content.ContextWrapper", "method": "sendStickyOrderedBroadcast"},
+    {"class": "android.content.ContextWrapper", "method": "startActivity"},
+    {"class": "android.content.ContextWrapper", "method": "startActivities"},
+
+
+    {"class": "android.net.Uri", "method": "parse", "argumentTypes": ["java.lang.String"]},
+    {"class": "org.apache.http.impl.client.DefaultHttpClient", "method": "execute"},
+    {"class": "org.apache.http.client.methods.HttpPost", "method": "<init>"},
+    {"class": "org.apache.http.client.HttpClient", "method": "execute"},
+
+    {"class": "android.location.LocationManager", "method": "getLastKnownLocation"},
+
+    {"class": "android.net.wifi.WifiManager", "method": "getConfiguredNetworks"},
+
+    {"class": "android.content.ContextWrapper", "method": "openFileInput"},
+    {"class": "android.content.ContextWrapper", "method": "openFileOutput"},
+    {"class": "java.io.FileReader", "method": "<init>"},
+    {"class": "java.io.FileWriter", "method": "<init>"},
+
+    {"class": "java.net.URL", "method": "<init>"},
+    {"class": "java.net.URL", "method": "openConnection"},
+    {"class": "java.net.URL", "method": "openStream"},
+
+    {"class": "java.io.Reader", "method": "read"},
+    {"class": "java.io.Writer", "method": "write"},
+    {"class": "java.io.BufferedReader", "method": "read"},
+    {"class": "java.io.BufferedReader", "method": "readLine"},
+    {"class": "java.io.BufferedWriter", "method": "write"},
+    {"class": "java.io.BufferedWriter", "method": "newLine"},
+    {"class": "java.io.InputStreamReader", "method": "read"},
+    {"class": "java.io.OutputStreamWriter", "method": "write"},
+    {"class": "java.io.CharArrayReader", "method": "read"},
+    {"class": "java.io.CharArrayWriter", "method": "write"},
+    {"class": "java.io.CharArrayWriter", "method": "writeTo"},
+    {"class": "java.io.FilterReader", "method": "read"},
+    {"class": "java.io.FilterWriter", "method": "write"},
+    {"class": "java.io.StringReader", "method": "read"},
+    {"class": "java.io.StringWriter", "method": "write"},
+    {"class": "java.io.PrintWriter", "method": "append"},
+    {"class": "java.io.PrintWriter", "method": "format"},
+    {"class": "java.io.PrintWriter", "method": "print"},
+    {"class": "java.io.PrintWriter", "method": "printf"},
+    {"class": "java.io.PrintWriter", "method": "println"},
+    {"class": "java.io.PrintWriter", "method": "write"},
+
+    {"class": "android.content.ContextWrapper", "method": "openOrCreateDatabase"},
+    {"class": "android.database.sqlite.SQLiteDatabase", "method": "openDatabase"},
+    {"class": "android.database.sqlite.SQLiteDatabase", "method": "openOrCreateDatabase"},
+    {"class": "android.database.sqlite.SQLiteDatabase", "method": "query"},
+    {"class": "android.database.sqlite.SQLiteDatabase", "method": "rawQuery"},
+    {"class": "android.database.sqlite.SQLiteDatabase", "method": "queryWithFactory"},
+    {"class": "android.database.sqlite.SQLiteDatabase", "method": "rawQueryWithFactory"},
+
+    {"class": "android.content.ContentResolver"},
+
+
+    {"class": "android.telephony.SmsManager", "method": "sendTextMessage", "returnType": "void", "argumentTypes": ["java.lang.String", "java.lang.String", "java.lang.String", "android.app.PendingIntent", "android.app.PendingIntent"], "stubFilename": "sendTextMessage.smali"},
+    {"class": "android.telephony.SmsManager", "method": "sendDataMessage"},
+    {"class": "android.telephony.SmsManager", "method": "sendMultipartTextMessage"},
+
+    {"class": "android.content.pm.PackageManager", "method": "getInstalledApplications"},
+
+    {"class": "android.telephony.TelephonyManager", "method": "getDeviceId", "returnType": "java.lang.String", "argumentTypes": [], "stubFilename": "getDeviceId.smali"},
+    {"class": "android.telephony.TelephonyManager", "method": "getCallState"},
+    {"class": "android.telephony.TelephonyManager", "method": "getSubscriberId"},
+    {"class": "android.telephony.TelephonyManager", "method": "getCellLocation"},
+
+    {"class": "java.security.MessageDigest", "method": "getInstance"},
+    {"class": "java.security.MessageDigest", "method": "update"},
+    {"class": "java.security.MessageDigest", "method": "digest"},
+
+    {"class": "javax.crypto.Cipher", "method": "getInstance"},
+    {"class": "javax.crypto.spec.SecretKeySpec", "method": "<init>"},
+    {"class": "javax.crypto.Cipher", "method": "init"},
+    {"class": "javax.crypto.Cipher", "method": "doFinal"}
+]
