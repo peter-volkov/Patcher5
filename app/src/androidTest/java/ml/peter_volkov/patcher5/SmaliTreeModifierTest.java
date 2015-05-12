@@ -29,35 +29,35 @@ public class SmaliTreeModifierTest extends TestCase {
         InstructionNode testCase = new InstructionNode("invoke-virtual {v0, v5}, Landroid/location/LocationManager;->getLastKnownLocation(Ljava/lang/String;)Landroid/location/Location;");
         String correct = String.format("invoke-static {v0, v5}, L%s/android/location/LocationManager;->getLastKnownLocation(Landroid/location/LocationManager;Ljava/lang/String;)Landroid/location/Location;",
                 SmaliTreeModifier.agentPackagePrefix);
-        this.smaliTreeModifier.modifyInstruction(testCase);
+        this.smaliTreeModifier.getModifiedInstruction(testCase);
         String actual = testCase.getSmaliText();
         assertEquals(correct, actual);
 
         testCase = new InstructionNode("invoke-virtual {v4}, Landroid/net/wifi/WifiManager;->getConfiguredNetworks()Ljava/util/List;");
         correct = String.format("invoke-static {v4}, L%s/android/net/wifi/WifiManager;->getConfiguredNetworks(Landroid/net/wifi/WifiManager;)Ljava/util/List;",
                 SmaliTreeModifier.agentPackagePrefix);
-        this.smaliTreeModifier.modifyInstruction(testCase);
+        this.smaliTreeModifier.getModifiedInstruction(testCase);
         actual = testCase.getSmaliText();
         assertEquals(correct, actual);
 
         testCase = new InstructionNode("invoke-static {v3}, Landroid/net/Uri;->parse(Ljava/lang/String;)Landroid/net/Uri;");
         correct = String.format("invoke-static {v3}, L%s/android/net/Uri;->parse(Ljava/lang/String;)Landroid/net/Uri;",
                 SmaliTreeModifier.agentPackagePrefix);
-        this.smaliTreeModifier.modifyInstruction(testCase);
+        this.smaliTreeModifier.getModifiedInstruction(testCase);
         actual = testCase.getSmaliText();
         assertEquals(correct, actual);
 
         testCase = new InstructionNode("invoke-interface {v1, v2}, Lorg/apache/http/client/HttpClient;->execute(Lorg/apache/http/client/methods/HttpUriRequest;)Lorg/apache/http/HttpResponse;");
         correct = String.format("invoke-static {v1, v2}, L%s/org/apache/http/client/HttpClient;->execute(Lorg/apache/http/client/HttpClient;Lorg/apache/http/client/methods/HttpUriRequest;)Lorg/apache/http/HttpResponse;",
                 SmaliTreeModifier.agentPackagePrefix);
-        this.smaliTreeModifier.modifyInstruction(testCase);
+        this.smaliTreeModifier.getModifiedInstruction(testCase);
         actual = testCase.getSmaliText();
         assertEquals(correct, actual);
 
         testCase = new InstructionNode("invoke-virtual/range {v0 .. v5}, Landroid/telephony/SmsManager;->sendTextMessage(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/app/PendingIntent;Landroid/app/PendingIntent;)V");
         correct = String.format("invoke-static/range {v0 .. v5}, L%s/android/telephony/SmsManager;->sendTextMessage(Landroid/telephony/SmsManager;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/app/PendingIntent;Landroid/app/PendingIntent;)V",
                 SmaliTreeModifier.agentPackagePrefix);
-        this.smaliTreeModifier.modifyInstruction(testCase);
+        this.smaliTreeModifier.getModifiedInstruction(testCase);
         actual = testCase.getSmaliText();
         assertEquals(correct, actual);
 

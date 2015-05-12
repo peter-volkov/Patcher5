@@ -1,19 +1,15 @@
 package ml.peter_volkov.patcher5;
 
-import android.os.Environment;
+import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import org.apache.commons.io.FileUtils;
-
-import kellinwood.security.zipsigner.ProgressListener;
-import kellinwood.security.zipsigner.ProgressEvent;
 import kellinwood.security.zipsigner.ZipSigner;
 import kellinwood.zipio.ZioEntry;
-import kellinwood.zipio.ZioEntryInputStream;
-import kellinwood.zipio.ZioEntryOutputStream;
 import kellinwood.zipio.ZipInput;
 import kellinwood.zipio.ZipOutput;
 
@@ -29,8 +25,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.security.GeneralSecurityException;
 import java.util.Iterator;
-import java.util.zip.InflaterInputStream;
-import java.util.zip.ZipEntry;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -67,7 +61,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private String disassembleDexFile(String sourceDexFilePath, String targetDirPath) {
-        String baksmaliPath = "/sdcard/smali_games/baksmali.dex.zip";
+        String baksmaliPath = getAppDataDir() + "/files/baksmali.dex.zip";
         String command = "dalvikvm -classpath " + baksmaliPath + " org.jf.baksmali.main";
         command += " -o " + targetDirPath;
         command += " " + sourceDexFilePath;
@@ -75,7 +69,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private String assembleDexFile(String sourceDirPath, String targetDexFilePath) {
-        String smaliPath = "/sdcard/smali_games/smali.dex.zip";
+        String smaliPath =  getAppDataDir() + "/files/smali.dex.zip";
         String command = "dalvikvm -classpath " + smaliPath + " org.jf.smali.main";
         command += " -o " + targetDexFilePath;
         command += " " + sourceDirPath;
@@ -100,6 +94,21 @@ public class MainActivity extends ActionBarActivity {
             Log.e(e.getMessage());
         }
         return bytes;
+    }
+
+    private void writeLocalFileFromInputStream(InputStream inputStream, String filepath) {
+        try {
+            FileOutputStream fileOutputStream = this.openFileOutput(filepath, Context.MODE_PRIVATE);
+            byte[] buffer = new byte[1024];
+            int count = 0;
+            while ((count = inputStream.read(buffer)) >= 0) {
+                fileOutputStream.write(buffer, 0, count);
+            }
+            fileOutputStream.flush();
+            fileOutputStream.close();
+        } catch (IOException e) {
+            Log.e(e.getMessage());
+        }
     }
 
     private void writeFileFromInputStream(InputStream inputStream, String filepath) {
@@ -127,17 +136,17 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
-    private void doStuff() {
-        File sdDir = Environment.getExternalStorageDirectory();
-
-        //String workingDir = sdDir + "/smali_games/";
-        //String dexFilePath = workingDir + "classes.dex";
-
-        String originalApkFilePath = "/sdcard/smali_games/signing/original.apk";
-
+    private void patchApk(String originalApkFilePath) {
         ZipOutput zipOutput;
 
-        String workingDir = "/sdcard/smali_games/signing/";
+        String appDataDir = getAppDataDir();
+        new File(appDataDir).setReadable(true, false);
+        new File(appDataDir + "/files/").setReadable(true, false);
+
+        //String workingDir = "/sdcard/smali_games/signing/";
+        String workingDir = appDataDir + "/files/workingDir/";
+        new File(workingDir).mkdirs();
+        new File(workingDir).setReadable(true, false);
 
         String originalDexFilePath = workingDir + "classes.dex.original";
         String modifiedDexFilePath = workingDir + "classes.dex.modified";
@@ -206,22 +215,43 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //doStuff();
-        dropSmali();
+
+        this.extractSmaliDexFiles();
+
+        String originalApkFilePath = "/sdcard/smali_games/signing/original.apk";
+        this.patchApk(originalApkFilePath);
     }
 
-    private void dropSmali() {
+    private String getAppDataDir() {
+        PackageManager packageManager = getPackageManager();
+        String packageName = getPackageName();
         try {
-            InputStream ins = this.getClass().getClassLoader().getResourceAsStream("assets/bin/baksmali.dex.zip");
-            byte[] buffer = new byte[ins.available()];
-            ins.read(buffer);
-            ins.close();
-            //FileOutputStream fos = this.openFileOutput(FILENAME, this.MODE_PRIVATE);
-            FileOutputStream fos = new FileOutputStream("/sdcard/smali_games/test_smali_drop/baksmali.dex.zip");
-            fos.write(buffer);
-            fos.close();
+            PackageInfo packageInfo = packageManager.getPackageInfo(packageName, 0);
+            return packageInfo.applicationInfo.dataDir;
+        } catch (PackageManager.NameNotFoundException e) {
+            Log.w("Error Package name not found " + e.getMessage());
+            return null;
+        }
+    }
 
-            //File file = getFileStreamPath(FILENAME);
+    private void extractSmaliDexFiles() {
+        String appDataDir = getAppDataDir();
+        try {
+            if (!new File(appDataDir, "/files/baksmali.dex.zip").exists()) {
+                InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("assets/bin/baksmali.dex.zip");
+                this.writeLocalFileFromInputStream(inputStream, "baksmali.dex.zip");
+                if (!new File(appDataDir + "/files/baksmali.dex.zip").setReadable(true, false)) {
+                    Log.e("Cannot set " + appDataDir + "/files/baksmali.dex.zip readable");
+                }
+            }
+
+            if (!new File(appDataDir, "/files/smali.dex.zip").exists()) {
+                InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("assets/bin/smali.dex.zip");
+                this.writeLocalFileFromInputStream(inputStream, "smali.dex.zip");
+                if (!new File(appDataDir + "/files/smali.dex.zip").setReadable(true, false)) {
+                    Log.e("Cannot set " + appDataDir + "/files/smali.dex.zip readable");
+                }
+            }
         } catch (Exception e) {
             Log.e(e.getMessage());
         }
