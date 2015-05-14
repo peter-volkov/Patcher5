@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="ml.peter_volkov.patcher5" >
+
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -15,7 +17,21 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+
+                <data android:mimeType="application/vnd.android.package-archive" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".ApkPatchActivity"
+            android:label="@string/title_activity_apk_patch" >
+        </activity>
+        <activity
+            android:name=".InstallModifiedApkActivity"
+            android:label="@string/title_activity_install_modified_apk" >
+        </activity>
+        <activity
+            android:name=".UninstallOriginalApkActivity"
+            android:label="@string/title_activity_uninstall_orignal_apk" >
         </activity>
     </application>
 
